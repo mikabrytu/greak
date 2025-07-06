@@ -41,6 +41,7 @@ func preparePaddle() {
 	}
 
 	paddle = objects.NewPaddle(rect, render.Blue)
+	paddle.SetSpeed(values.PADDLE_SPEED)
 }
 
 func prepareBall() {

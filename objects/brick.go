@@ -8,9 +8,11 @@ import (
 )
 
 type Brick struct {
-	name  string
-	rect  utils.RectSpecs
-	color render.Color
+	instance lifecycle.GameObject
+	name     string
+	rect     utils.RectSpecs
+	body     physics.RigidBody
+	color    render.Color
 }
 
 func NewBrick(name string, rect utils.RectSpecs, color render.Color) *Brick {
@@ -20,18 +22,32 @@ func NewBrick(name string, rect utils.RectSpecs, color render.Color) *Brick {
 		color: color,
 	}
 
-	lifecycle.Register(lifecycle.GameObject{
-		Start:  brick.start,
-		Render: brick.render,
+	brick.instance = lifecycle.Register(lifecycle.GameObject{
+		Start:   brick.start,
+		Physics: brick.physics,
+		Render:  brick.render,
+		Destroy: brick.destroy,
 	})
 
 	return brick
 }
 
 func (b *Brick) start() {
-	physics.RegisterBody(&b.rect, b.name)
+	b.body = physics.RegisterBody(&b.rect, b.name)
+}
+
+func (b *Brick) physics() {
+	collision := physics.CheckCollision(&b.body)
+
+	if collision.Name != "nil" {
+		lifecycle.Stop(b.instance)
+	}
 }
 
 func (b *Brick) render() {
 	render.DrawSimpleShapes(b.rect, b.color)
+}
+
+func (b *Brick) destroy() {
+	physics.RemoveBody(&b.body)
 }

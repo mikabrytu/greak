@@ -21,4 +21,5 @@ const (
 	BRICK_ROWS   int = 8
 	BRICK_COLS   int = 14
 	PADDLE_SPEED int = 10
+	BALL_SPEED   int = 3
 )

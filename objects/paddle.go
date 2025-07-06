@@ -17,8 +17,9 @@ type Paddle struct {
 	canMove bool
 }
 
-func NewPaddle(rect utils.RectSpecs, color render.Color) *Paddle {
+func NewPaddle(name string, rect utils.RectSpecs, color render.Color) *Paddle {
 	paddle := &Paddle{
+		name:    name,
 		rect:    rect,
 		color:   color,
 		canMove: true,

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"littlejumbo/greak/objects"
 	values "littlejumbo/greak/values"
 
@@ -40,7 +41,7 @@ func preparePaddle() {
 		Height: values.BRICK_SIZE.Y,
 	}
 
-	paddle = objects.NewPaddle(rect, render.Blue)
+	paddle = objects.NewPaddle("paddle", rect, render.Blue)
 	paddle.SetSpeed(values.PADDLE_SPEED)
 }
 
@@ -52,7 +53,8 @@ func prepareBall() {
 		Height: values.BALL_SIZE.Y,
 	}
 
-	ball = objects.NewBall(rect, render.White)
+	ball = objects.NewBall("ball", rect, render.White)
+	ball.SetSpeed(values.BALL_SPEED)
 }
 
 func prepareBricks() {
@@ -79,7 +81,8 @@ func prepareBricks() {
 				color = render.Green
 			}
 
-			objects.NewBrick(rect, color)
+			name := fmt.Sprintf("brick-%v%v", i, j)
+			objects.NewBrick(name, rect, color)
 		}
 	}
 }

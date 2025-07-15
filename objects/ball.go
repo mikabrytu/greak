@@ -3,6 +3,7 @@ package objects
 import (
 	"littlejumbo/greak/values"
 
+	"github.com/mikabrytu/gomes-engine/events"
 	"github.com/mikabrytu/gomes-engine/lifecycle"
 	"github.com/mikabrytu/gomes-engine/math"
 	"github.com/mikabrytu/gomes-engine/physics"
@@ -17,13 +18,15 @@ type Ball struct {
 	color     render.Color
 	speed     int
 	direction math.Vector2
+	inPlay    bool
 }
 
 func NewBall(name string, rect utils.RectSpecs, color render.Color) *Ball {
 	ball := &Ball{
-		name:  name,
-		rect:  rect,
-		color: color,
+		name:   name,
+		rect:   rect,
+		color:  color,
+		inPlay: true,
 	}
 
 	lifecycle.Register(lifecycle.GameObject{
@@ -44,6 +47,15 @@ func (b *Ball) SetDirection(direction math.Vector2) {
 	if b.body.Name != "" && b.body.Name != "nil" {
 		b.body.Axis = b.direction
 	}
+}
+
+func (b *Ball) SetPosition(position math.Vector2) {
+	b.rect.PosX = position.X
+	b.rect.PosY = position.Y
+}
+
+func (b *Ball) SetInPlay(inPlay bool) {
+	b.inPlay = inPlay
 }
 
 func (b *Ball) start() {
@@ -79,7 +91,8 @@ func (b *Ball) checkScreenBoundaries() {
 		b.body.Axis.X = -1
 	}
 
-	if (b.body.Rect.PosY + b.body.Rect.Height) > values.SCREEN_SIZE.Y {
-		b.body.Axis.Y = -1
+	if b.inPlay && (b.body.Rect.PosY+b.body.Rect.Height) > values.SCREEN_SIZE.Y {
+		b.inPlay = false
+		events.Emit(values.BALL_OUT_EVENT)
 	}
 }

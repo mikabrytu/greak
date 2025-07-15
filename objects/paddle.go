@@ -3,6 +3,7 @@ package objects
 import (
 	"github.com/mikabrytu/gomes-engine/events"
 	"github.com/mikabrytu/gomes-engine/lifecycle"
+	"github.com/mikabrytu/gomes-engine/math"
 	"github.com/mikabrytu/gomes-engine/physics"
 	"github.com/mikabrytu/gomes-engine/render"
 	"github.com/mikabrytu/gomes-engine/utils"
@@ -36,6 +37,11 @@ func NewPaddle(name string, rect utils.RectSpecs, color render.Color) *Paddle {
 
 func (p *Paddle) SetSpeed(speed int) {
 	p.speed = speed
+}
+
+func (p *Paddle) SetPosition(position math.Vector2) {
+	p.rect.PosX = position.X
+	p.rect.PosY = position.Y
 }
 
 func (p *Paddle) start() {

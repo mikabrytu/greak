@@ -13,3 +13,7 @@ func Add(point int) {
 func Show() int {
 	return score
 }
+
+func Reset() {
+	score = 0
+}

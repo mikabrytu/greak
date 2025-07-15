@@ -1,14 +1,10 @@
 package main
 
 import (
-	"littlejumbo/greak/objects"
 	values "littlejumbo/greak/values"
 
 	gomesengine "github.com/mikabrytu/gomes-engine"
 )
-
-var paddle *objects.Paddle
-var ball *objects.Ball
 
 func main() {
 	gomesengine.Init(

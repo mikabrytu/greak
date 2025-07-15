@@ -14,7 +14,11 @@ import (
 	"github.com/mikabrytu/gomes-engine/utils"
 )
 
+var paddle *objects.Paddle
+var ball *objects.Ball
 var font *ui.Font
+
+const PADDLE_OFFSET int = 24
 
 func game() {
 	preparePaddle()
@@ -26,10 +30,9 @@ func game() {
 }
 
 func preparePaddle() {
-	offset := 24
 	rect := utils.RectSpecs{
 		PosX:   (values.SCREEN_SIZE.X / 2) - (values.BRICK_SIZE.X / 2),
-		PosY:   values.SCREEN_SIZE.Y - offset,
+		PosY:   values.SCREEN_SIZE.Y - PADDLE_OFFSET,
 		Width:  values.BRICK_SIZE.X,
 		Height: values.BRICK_SIZE.Y,
 	}
@@ -110,9 +113,44 @@ func prepareScore() {
 func registerEvents() {
 	events.Subscribe(values.BRICK_DESTROYED_EVENT, func(params ...any) error {
 		point := params[0].([]any)[0].([]any)[0]
-		score.Add(point.(int))
-		font.UpdateText(fmt.Sprintf("%d", score.Show()))
-
+		onBrickDestroyed(point.(int))
 		return nil
 	})
+
+	events.Subscribe(values.BALL_OUT_EVENT, func(params ...any) error {
+		onBallOut()
+		return nil
+	})
+}
+
+func onBrickDestroyed(point int) {
+	score.Add(point)
+	font.UpdateText(fmt.Sprintf("%d", score.Show()))
+}
+
+func onBallOut() {
+	score.Reset()
+	font.UpdateText(fmt.Sprintf("%d", score.Show()))
+
+	bPos := math.Vector2{
+		X: (values.SCREEN_SIZE.X / 2) - (values.BALL_SIZE.X / 2),
+		Y: (values.SCREEN_SIZE.Y / 2) - (values.BALL_SIZE.Y / 2),
+	}
+	bDir := math.Vector2{
+		X: 0,
+		Y: 1,
+	}
+
+	ball.SetInPlay(true)
+	ball.SetPosition(bPos)
+	ball.SetSpeed(values.BALL_SPEED)
+	ball.SetDirection(bDir)
+
+	pPos := math.Vector2{
+		X: (values.SCREEN_SIZE.X / 2) - (values.BRICK_SIZE.X / 2),
+		Y: values.SCREEN_SIZE.Y - PADDLE_OFFSET,
+	}
+
+	paddle.SetPosition(pPos)
+	paddle.SetSpeed(values.PADDLE_SPEED)
 }

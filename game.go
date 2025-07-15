@@ -16,11 +16,14 @@ import (
 
 var paddle *objects.Paddle
 var ball *objects.Ball
-var font *ui.Font
+var scoreText *ui.Font
+var highText *ui.Font
 
 const PADDLE_OFFSET int = 24
 
 func game() {
+	score.Init()
+
 	preparePaddle()
 	prepareBall()
 	prepareBricks()
@@ -106,8 +109,13 @@ func prepareScore() {
 	}
 
 	score.Init()
-	font = ui.NewFont(specs, values.SCREEN_SIZE)
-	font.Init("0", render.White, position)
+	scoreText = ui.NewFont(specs, values.SCREEN_SIZE)
+	scoreText.Init("0", render.White, position)
+
+	position.X = values.SCREEN_SIZE.X / 2
+	text := fmt.Sprintf("%d", score.ShowHigh())
+	highText = ui.NewFont(specs, values.SCREEN_SIZE)
+	highText.Init(text, render.White, position)
 }
 
 func registerEvents() {
@@ -125,12 +133,14 @@ func registerEvents() {
 
 func onBrickDestroyed(point int) {
 	score.Add(point)
-	font.UpdateText(fmt.Sprintf("%d", score.Show()))
+	scoreText.UpdateText(fmt.Sprintf("%d", score.ShowCurrent()))
 }
 
 func onBallOut() {
+	score.SaveCurrent()
 	score.Reset()
-	font.UpdateText(fmt.Sprintf("%d", score.Show()))
+	scoreText.UpdateText(fmt.Sprintf("%d", score.ShowCurrent()))
+	highText.UpdateText(fmt.Sprintf("%d", score.ShowHigh()))
 
 	bPos := math.Vector2{
 		X: (values.SCREEN_SIZE.X / 2) - (values.BALL_SIZE.X / 2),

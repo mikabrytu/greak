@@ -1,6 +1,9 @@
 package objects
 
 import (
+	"littlejumbo/greak/values"
+
+	"github.com/mikabrytu/gomes-engine/events"
 	"github.com/mikabrytu/gomes-engine/lifecycle"
 	"github.com/mikabrytu/gomes-engine/physics"
 	"github.com/mikabrytu/gomes-engine/render"
@@ -13,6 +16,7 @@ type Brick struct {
 	rect     utils.RectSpecs
 	body     physics.RigidBody
 	color    render.Color
+	point    int
 }
 
 func NewBrick(name string, rect utils.RectSpecs, color render.Color) *Brick {
@@ -32,6 +36,10 @@ func NewBrick(name string, rect utils.RectSpecs, color render.Color) *Brick {
 	return brick
 }
 
+func (b *Brick) SetPoint(value int) {
+	b.point = value
+}
+
 func (b *Brick) start() {
 	b.body = physics.RegisterBody(&b.rect, b.name)
 }
@@ -40,6 +48,7 @@ func (b *Brick) physics() {
 	collision := physics.CheckCollision(&b.body)
 
 	if collision.Name != "nil" {
+		events.Emit(values.BRICK_DESTROYED_EVENT, b.point)
 		lifecycle.Stop(b.instance)
 	}
 }

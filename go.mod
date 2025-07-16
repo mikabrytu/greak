@@ -2,7 +2,7 @@ module littlejumbo/greak
 
 go 1.24.1
 
-require github.com/mikabrytu/gomes-engine v1.2.7-dev
+require github.com/mikabrytu/gomes-engine v1.2.8-dev
 
 require (
 	github.com/AlexanderGrom/go-event v0.0.0-20180406111247-a2f1486e096e // indirect

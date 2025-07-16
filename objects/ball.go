@@ -29,7 +29,7 @@ func NewBall(name string, rect utils.RectSpecs, color render.Color) *Ball {
 		inPlay: true,
 	}
 
-	lifecycle.Register(lifecycle.GameObject{
+	lifecycle.Register(&lifecycle.GameObject{
 		Start:   ball.start,
 		Physics: ball.physics,
 		Render:  ball.render,

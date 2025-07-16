@@ -26,7 +26,7 @@ func NewPaddle(name string, rect utils.RectSpecs, color render.Color) *Paddle {
 		canMove: true,
 	}
 
-	lifecycle.Register(lifecycle.GameObject{
+	lifecycle.Register(&lifecycle.GameObject{
 		Start:   paddle.start,
 		Physics: paddle.physics,
 		Render:  paddle.render,

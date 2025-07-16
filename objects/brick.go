@@ -11,7 +11,7 @@ import (
 )
 
 type Brick struct {
-	instance lifecycle.GameObject
+	instance *lifecycle.GameObject
 	name     string
 	rect     utils.RectSpecs
 	body     physics.RigidBody
@@ -26,7 +26,7 @@ func NewBrick(name string, rect utils.RectSpecs, color render.Color) *Brick {
 		color: color,
 	}
 
-	brick.instance = lifecycle.Register(lifecycle.GameObject{
+	brick.instance = lifecycle.Register(&lifecycle.GameObject{
 		Start:   brick.start,
 		Physics: brick.physics,
 		Render:  brick.render,
@@ -48,7 +48,7 @@ func (b *Brick) physics() {
 	collision := physics.CheckCollision(&b.body)
 
 	if collision.Name != "nil" {
-		events.Emit(values.BRICK_DESTROYED_EVENT, b.point)
+		events.Emit(values.BRICK_DESTROYED_EVENT, b.name, b.rect, b.color, b.point)
 		lifecycle.Stop(b.instance)
 	}
 }

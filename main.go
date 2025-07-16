@@ -1,6 +1,7 @@
 package main
 
 import (
+	"littlejumbo/greak/game"
 	values "littlejumbo/greak/values"
 
 	gomesengine "github.com/mikabrytu/gomes-engine"
@@ -14,8 +15,6 @@ func main() {
 		int32(values.SCREEN_SIZE.Y),
 	)
 	lifecycle.SetSmoothStep(0.9)
-
-	game()
-
+	game.Main()
 	gomesengine.Run()
 }

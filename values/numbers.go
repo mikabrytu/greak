@@ -23,6 +23,6 @@ const (
 	BRICK_COLS             int = 14
 	PADDLE_SPEED           int = 5
 	PADDLE_SPEED_INCREMENT int = 3
-	BALL_SPEED             int = 3
-	BALL_SPEED_INCREMENT   int = 3
+	BALL_SPEED             int = 4
+	BALL_SPEED_INCREMENT   int = 2
 )

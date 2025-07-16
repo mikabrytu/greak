@@ -1,7 +1,6 @@
 package objects
 
 import (
-	"fmt"
 	"littlejumbo/greak/values"
 
 	"github.com/mikabrytu/gomes-engine/events"
@@ -47,6 +46,11 @@ func (p *Paddle) SetPosition(position math.Vector2) {
 	p.rect.PosY = position.Y
 }
 
+func (p *Paddle) SetSize(size math.Vector2) {
+	p.rect.Width = size.X
+	p.rect.Height = size.Y
+}
+
 func (p *Paddle) start() {
 	physics.RegisterBody(&p.rect, p.name)
 
@@ -72,17 +76,11 @@ func (p *Paddle) start() {
 
 	events.Subscribe(values.PADDLE_INCREASE_SIZE_EVENT, func(params ...any) error {
 		p.rect.Width += values.PADDLE_SIZE_INCREMENT
-
-		fmt.Printf("Paddle Size Increse to %v\n", p.rect.Width)
-
 		return nil
 	})
 
 	events.Subscribe(values.PADDLE_INCREASE_SPEED_EVENT, func(params ...any) error {
 		p.speed += values.PADDLE_SPEED_INCREMENT
-
-		fmt.Printf("Paddle Speed Increase to %v\n", p.speed)
-
 		return nil
 	})
 }

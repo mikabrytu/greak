@@ -41,6 +41,7 @@ func resetPaddle() {
 
 	paddle.SetPosition(pPos)
 	paddle.SetSpeed(values.PADDLE_SPEED)
+	paddle.SetSize(values.BRICK_SIZE)
 }
 
 func resetBricks() {

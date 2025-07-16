@@ -1,6 +1,9 @@
 package objects
 
 import (
+	"fmt"
+	"littlejumbo/greak/values"
+
 	"github.com/mikabrytu/gomes-engine/events"
 	"github.com/mikabrytu/gomes-engine/lifecycle"
 	"github.com/mikabrytu/gomes-engine/math"
@@ -64,6 +67,22 @@ func (p *Paddle) start() {
 
 	events.Subscribe(events.INPUT_KEYBOARD_RELEASED_D, func(params ...any) error {
 		p.move(0)
+		return nil
+	})
+
+	events.Subscribe(values.PADDLE_INCREASE_SIZE_EVENT, func(params ...any) error {
+		p.rect.Width += values.PADDLE_SIZE_INCREMENT
+
+		fmt.Printf("Paddle Size Increse to %v\n", p.rect.Width)
+
+		return nil
+	})
+
+	events.Subscribe(values.PADDLE_INCREASE_SPEED_EVENT, func(params ...any) error {
+		p.speed += values.PADDLE_SPEED_INCREMENT
+
+		fmt.Printf("Paddle Speed Increase to %v\n", p.speed)
+
 		return nil
 	})
 }

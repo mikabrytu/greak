@@ -14,8 +14,6 @@ import (
 	"github.com/mikabrytu/gomes-engine/utils"
 )
 
-var powerList *list.List
-
 func preparePaddle() {
 	rect := utils.RectSpecs{
 		PosX:   (values.SCREEN_SIZE.X / 2) - (values.BRICK_SIZE.X / 2),
@@ -52,15 +50,17 @@ func prepareBricks() {
 		Height: values.BRICK_SIZE.Y,
 	}
 
-	// Generate 22 random ids for power ups
 	powerList = list.New()
-	for i := 0; i < 22; i++ {
-		id := math.Vector2{
-			X: rand.Intn(values.BRICK_ROWS),
-			Y: rand.Intn(values.BRICK_COLS),
+	for range 22 {
+		powerUp := PowerUp{
+			Id: math.Vector2{
+				X: rand.Intn(values.BRICK_ROWS),
+				Y: rand.Intn(values.BRICK_COLS),
+			},
+			Event: pickRandomPower(),
 		}
 
-		powerList.PushBack(id)
+		powerList.PushBack(powerUp)
 	}
 
 	for i := range values.BRICK_ROWS {
@@ -90,9 +90,9 @@ func prepareBricks() {
 			brick.SetPoint(point)
 
 			for e := powerList.Front(); e != nil; e = e.Next() {
-				id := e.Value.(math.Vector2)
-				if id.X == i && id.Y == j {
-					brick.SetPowerUp(100)
+				power := e.Value.(PowerUp)
+				if power.Id.X == i && power.Id.Y == j {
+					brick.SetPowerUp(power.Event)
 					break
 				}
 			}
@@ -119,4 +119,22 @@ func prepareScore() {
 	text := fmt.Sprintf("%d", score.ShowHigh())
 	highText = ui.NewFont(specs, values.SCREEN_SIZE)
 	highText.Init(text, render.White, position)
+}
+
+func pickRandomPower() string {
+	pool := []string{
+		values.PADDLE_INCREASE_SIZE_EVENT,
+		values.PADDLE_INCREASE_SPEED_EVENT,
+		values.BALL_INCREASE_SPEED_EVENT,
+		values.BALL_NEW_EVENT,
+		values.COLOR_GREEN_DOUBLE_POINTS_EVENT,
+		values.COLOR_YELLOW_DOUBLE_POINTS_EVENT,
+		values.COLOR_ORANGE_DOUBLE_POINTS_EVENT,
+		values.COLOR_RED_DOUBLE_POINTS_EVENT,
+		values.COLOR_ALL_DOUBLE_POINTS_EVENT,
+		values.SHIELD_EVENT,
+	}
+
+	index := rand.Intn(len(pool))
+	return pool[index]
 }

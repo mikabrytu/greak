@@ -86,8 +86,6 @@ func (p *Paddle) start() {
 }
 
 func (p *Paddle) physics() {
-	// TODO: Block movement when reach screen boundaries
-
 	if p.canMove {
 		p.rect.PosX += p.axis * p.speed
 	}
@@ -98,5 +96,13 @@ func (p *Paddle) render() {
 }
 
 func (p *Paddle) move(axis int) {
+	if axis == -1 && p.rect.PosX < 0 {
+		axis = 0
+	}
+
+	if axis == 1 && (p.rect.PosX+p.rect.Width) > values.SCREEN_SIZE.X {
+		axis = 0
+	}
+
 	p.axis = axis
 }

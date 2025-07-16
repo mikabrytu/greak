@@ -132,7 +132,7 @@ func pickRandomPower() string {
 		values.COLOR_ORANGE_DOUBLE_POINTS_EVENT,
 		values.COLOR_RED_DOUBLE_POINTS_EVENT,
 		values.COLOR_ALL_DOUBLE_POINTS_EVENT,
-		values.SHIELD_EVENT,
+		/*values.SHIELD_EVENT,*/
 	}
 
 	index := rand.Intn(len(pool))

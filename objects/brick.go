@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"fmt"
 	"littlejumbo/greak/values"
 
 	"github.com/mikabrytu/gomes-engine/events"
@@ -47,6 +48,39 @@ func (b *Brick) SetPowerUp(value string) {
 
 func (b *Brick) start() {
 	b.body = physics.RegisterBody(&b.rect, b.name)
+
+	if b.color == render.Green {
+		events.Subscribe(values.COLOR_GREEN_DOUBLE_POINTS_EVENT, func(params ...any) error {
+			b.doublePoints()
+			return nil
+		})
+	}
+
+	if b.color == render.Yellow {
+		events.Subscribe(values.COLOR_YELLOW_DOUBLE_POINTS_EVENT, func(params ...any) error {
+			b.doublePoints()
+			return nil
+		})
+	}
+
+	if b.color == render.Orange {
+		events.Subscribe(values.COLOR_ORANGE_DOUBLE_POINTS_EVENT, func(params ...any) error {
+			b.doublePoints()
+			return nil
+		})
+	}
+
+	if b.color == render.Red {
+		events.Subscribe(values.COLOR_RED_DOUBLE_POINTS_EVENT, func(params ...any) error {
+			b.doublePoints()
+			return nil
+		})
+	}
+
+	events.Subscribe(values.COLOR_ALL_DOUBLE_POINTS_EVENT, func(params ...any) error {
+		b.doublePoints()
+		return nil
+	})
 }
 
 func (b *Brick) physics() {
@@ -65,4 +99,9 @@ func (b *Brick) render() {
 
 func (b *Brick) destroy() {
 	physics.RemoveBody(&b.body)
+}
+
+func (b *Brick) doublePoints() {
+	b.point += b.point
+	fmt.Printf("Doubling points for %v. Current: %v\n", b.color, b.point)
 }

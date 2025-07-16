@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"fmt"
 	"littlejumbo/greak/values"
 
 	"github.com/mikabrytu/gomes-engine/events"
@@ -63,6 +64,14 @@ func (b *Ball) start() {
 	b.body.Axis = b.direction
 
 	physics.EnableDynamicCollision(&b.body)
+
+	events.Subscribe(values.BALL_INCREASE_SPEED_EVENT, func(params ...any) error {
+		b.speed += values.BALL_SPEED_INCREMENT
+
+		fmt.Printf("Ball Speed increased to %v\n", b.speed)
+
+		return nil
+	})
 }
 
 func (b *Ball) physics() {

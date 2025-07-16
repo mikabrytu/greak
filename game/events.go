@@ -38,8 +38,10 @@ func onBrickDestroyed(data BrickData) {
 }
 
 func onBallOut() {
+	/* Reset */
 	updateScore()
 	resetBall()
 	resetPaddle()
 	resetBricks()
+	/* Reset */
 }

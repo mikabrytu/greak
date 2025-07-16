@@ -30,10 +30,14 @@ func Main() {
 	destroyedBricks = list.New()
 	score.Init()
 
+	/* Setup */
 	preparePaddle()
 	prepareBall()
 	prepareBricks()
 	prepareScore()
+	/* Setup */
 
+	/* Events */
 	registerEvents()
+	/* Events */
 }

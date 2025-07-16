@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"fmt"
 	"littlejumbo/greak/values"
 
 	"github.com/mikabrytu/gomes-engine/events"
@@ -17,6 +18,7 @@ type Brick struct {
 	body     physics.RigidBody
 	color    render.Color
 	point    int
+	power    int
 }
 
 func NewBrick(name string, rect utils.RectSpecs, color render.Color) *Brick {
@@ -40,6 +42,10 @@ func (b *Brick) SetPoint(value int) {
 	b.point = value
 }
 
+func (b *Brick) SetPowerUp(value int) {
+	b.power = value
+}
+
 func (b *Brick) start() {
 	b.body = physics.RegisterBody(&b.rect, b.name)
 }
@@ -48,6 +54,8 @@ func (b *Brick) physics() {
 	collision := physics.CheckCollision(&b.body)
 
 	if collision.Name != "nil" {
+		fmt.Printf("Power Up on Brick: %v\n", b.power)
+
 		events.Emit(values.BRICK_DESTROYED_EVENT, b.name, b.rect, b.color, b.point)
 		lifecycle.Stop(b.instance)
 	}

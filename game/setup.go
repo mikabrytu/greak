@@ -1,16 +1,20 @@
 package game
 
 import (
+	"container/list"
 	"fmt"
 	"littlejumbo/greak/managers/score"
 	"littlejumbo/greak/objects"
 	"littlejumbo/greak/values"
+	"math/rand"
 
 	"github.com/mikabrytu/gomes-engine/math"
 	"github.com/mikabrytu/gomes-engine/render"
 	"github.com/mikabrytu/gomes-engine/ui"
 	"github.com/mikabrytu/gomes-engine/utils"
 )
+
+var powerList *list.List
 
 func preparePaddle() {
 	rect := utils.RectSpecs{
@@ -48,6 +52,17 @@ func prepareBricks() {
 		Height: values.BRICK_SIZE.Y,
 	}
 
+	// Generate 22 random ids for power ups
+	powerList = list.New()
+	for i := 0; i < 22; i++ {
+		id := math.Vector2{
+			X: rand.Intn(values.BRICK_ROWS),
+			Y: rand.Intn(values.BRICK_COLS),
+		}
+
+		powerList.PushBack(id)
+	}
+
 	for i := range values.BRICK_ROWS {
 		for j := range values.BRICK_COLS {
 			rect.PosX = j * (values.BRICK_SIZE.X + offset)
@@ -73,6 +88,14 @@ func prepareBricks() {
 			name := fmt.Sprintf("brick-%v%v", i, j)
 			brick := objects.NewBrick(name, rect, color)
 			brick.SetPoint(point)
+
+			for e := powerList.Front(); e != nil; e = e.Next() {
+				id := e.Value.(math.Vector2)
+				if id.X == i && id.Y == j {
+					brick.SetPowerUp(100)
+					break
+				}
+			}
 		}
 	}
 }

@@ -15,11 +15,13 @@ var (
 		X: 12,
 		Y: 12,
 	}
+	PADDLE_SIZE_INCREMENT int = BRICK_SIZE.X / 4
 )
 
 const (
-	BRICK_ROWS   int = 8
-	BRICK_COLS   int = 14
-	PADDLE_SPEED int = 5
-	BALL_SPEED   int = 3
+	BRICK_ROWS             int = 8
+	BRICK_COLS             int = 14
+	PADDLE_SPEED           int = 5
+	PADDLE_SPEED_INCREMENT int = 3
+	BALL_SPEED             int = 3
 )
